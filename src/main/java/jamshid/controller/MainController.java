@@ -66,6 +66,7 @@ public class MainController extends TelegramLongPollingBot {
                             message.getFrom().getId());
                 }else if (todoController.getTask().containsKey(key)) {
                     System.out.println("yedi");
+                    if (todoController.getTask().get(key).getType() == null) todoController.getTask().get(key).setType("title");
                     mymessages = new TasksController().controlTask(update, todoController.getTask(), key);
                 }
             } else {

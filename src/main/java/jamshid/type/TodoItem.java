@@ -1,6 +1,5 @@
 package jamshid.type;
 
-import java.util.Map;
 
 public class TodoItem {
 private String id;
@@ -8,6 +7,15 @@ private String title;
 private  String content;
 private String createdDate;
 private Long userId;
+private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public TodoItem() {
     }

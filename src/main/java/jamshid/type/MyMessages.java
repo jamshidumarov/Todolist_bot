@@ -4,21 +4,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 
-import java.util.Map;
 
 public class MyMessages {
 
     private SendMessage sendMessage;
     private EditMessageText editMessageText;
-    private Map<Integer, TodoItem> task;
-
-    public Map<Integer, TodoItem> getTask() {
-        return task;
-    }
-
-    public void setTask(Map<Integer, TodoItem> task) {
-        this.task = task;
-    }
 
     private SendVideo sendVideo;
 

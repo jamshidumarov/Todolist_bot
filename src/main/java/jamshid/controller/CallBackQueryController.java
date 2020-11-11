@@ -1,5 +1,6 @@
 package jamshid.controller;
 
+import jamshid.database.Database;
 import jamshid.type.MyMessages;
 import jamshid.type.TodoItem;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 public class CallBackQueryController {
     private Map<Integer, TodoItem> task = new HashMap<Integer, TodoItem>();
+    private Database database = new Database();
 
 
     public MyMessages todoControllers(Update update) {
@@ -24,21 +26,24 @@ public class CallBackQueryController {
         edited_msg.setChatId(update.getCallbackQuery().getMessage().getChatId());
         edited_msg.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
         send_msg.setChatId(update.getCallbackQuery().getMessage().getChatId());
+
         if (update.getCallbackQuery().getData().startsWith("/todo/")){
             String[] commands = update.getCallbackQuery().getData().split("/");
 
             if (commands[2].equals("createNew")) {
+                System.out.println("vbbf");
                 send_msg.setText("Vazifa titulini yuboring");
                 msg.setTypeMessage("sendmessage");
                 msg.setSendMessage(send_msg);
+
                 TodoItem todoItem = new TodoItem();
                 todoItem.setId(Integer.toString(update.getCallbackQuery().getMessage().getMessageId()));
+                if (todoItem.getType() == null) todoItem.setType("title");
                 todoItem.setUserId(update.getCallbackQuery().getMessage().getChatId());
                 task.put(update.getCallbackQuery().getMessage().getFrom().getId(), todoItem);
-                msg.setTask(task);
             }
             if (commands[2].equals("list")) {
-                send_msg.setText("blablabla");
+                send_msg.setText("Bu buyruq hali mavjud emas");
                 msg.setTypeMessage("sendmessage");
                 msg.setSendMessage(send_msg);
             }

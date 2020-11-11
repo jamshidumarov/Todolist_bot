@@ -63,7 +63,6 @@ public class GeneralController {
             message.setTypeMessage("message_video");
         }
         if (text.equals("/settings")) {
-            System.out.println("salo,");
             sendMessage.setText("Tilni tanlang \uD83D\uDC47");
 
             InlineKeyboardButton engButton = new InlineButtonUtil().button("Eng\uD83C\uDDFA\uD83C\uDDF8", "eng");
