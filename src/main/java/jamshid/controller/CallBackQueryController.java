@@ -12,6 +12,7 @@ import java.util.Map;
 public class CallBackQueryController {
     private Map<Integer, TodoItem> task = new HashMap<Integer, TodoItem>();
 
+
     public MyMessages todoControllers(Update update) {
         MyMessages msg = new MyMessages();
 
@@ -27,7 +28,6 @@ public class CallBackQueryController {
             String[] commands = update.getCallbackQuery().getData().split("/");
 
             if (commands[2].equals("createNew")) {
-                System.out.println(commands[2]);
                 TodoItem todoItem = new TodoItem();
                 todoItem.setId(Integer.toString(update.getCallbackQuery().getMessage().getMessageId()));
 //                todoItem.setUserId(update.getCallbackQuery().getMessage().getChatId());

@@ -37,7 +37,6 @@ public class MainController extends TelegramLongPollingBot {
                         callbackQuery.getMessage().getMessageId(),
                         callbackQuery.getMessage().getChatId());
             } else if (callbackdata.equals("/todo/list") || callbackdata.equals("/todo/createNew")){
-                System.out.println(callbackdata);
                 mymessages = todoController.todoControllers(update);
             } else {
                 mymessages = new GeneralController().controllerlar(callbackQuery.getFrom(),
@@ -59,7 +58,6 @@ public class MainController extends TelegramLongPollingBot {
                 } else
                 if (todoController.getTask().containsKey(update.getCallbackQuery().getMessage().getFrom().getId()))
                 {
-                    System.out.println("blablabla");
                     mymessages = new TasksController().controlTask(update, todoController.getTask());
                 }
             } else {
