@@ -4,7 +4,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class MyMessages {

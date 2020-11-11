@@ -10,7 +10,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
+
 public class MainController extends TelegramLongPollingBot {
+
+
+    CallBackQueryController todoController = new CallBackQueryController();
+    int key = 0;
 
 
     public String getBotUsername() {
@@ -22,9 +27,9 @@ public class MainController extends TelegramLongPollingBot {
     }
 
     public void onUpdateReceived(Update update) {
-        CallBackQueryController todoController = new CallBackQueryController();
         MyMessages mymessages = new MyMessages();
         Message message = update.getMessage();
+
 
         if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
@@ -36,8 +41,11 @@ public class MainController extends TelegramLongPollingBot {
                 mymessages = new SetLanguage().setlanguage(language,
                         callbackQuery.getMessage().getMessageId(),
                         callbackQuery.getMessage().getChatId());
-            } else if (callbackdata.equals("/todo/list") || callbackdata.equals("/todo/createNew")){
-                mymessages = todoController.todoControllers(update);
+            } else if (callbackdata.equals("/todo/list") || callbackdata.equals("/todo/createNew")) {
+                if (callbackdata.endsWith("createNew")) {
+                    key = callbackQuery.getMessage().getFrom().getId();
+                }
+                    mymessages = todoController.todoControllers(update);
             } else {
                 mymessages = new GeneralController().controllerlar(callbackQuery.getFrom(),
                         callbackdata,
@@ -49,16 +57,16 @@ public class MainController extends TelegramLongPollingBot {
             String text = message.getText();
 
             if (text != null) {
+
                 if (text.equals("/settings") || text.equals("/help") || text.equals("/start")) {
                     mymessages = new GeneralController().controllerlar(update.getMessage().getFrom(),
                             text,
                             message.getChatId(),
                             message.getMessageId(),
                             message.getFrom().getId());
-                } else
-                if (todoController.getTask().containsKey(update.getCallbackQuery().getMessage().getFrom().getId()))
-                {
-                    mymessages = new TasksController().controlTask(update, todoController.getTask());
+                }else if (todoController.getTask().containsKey(key)) {
+                    System.out.println("yedi");
+                    mymessages = new TasksController().controlTask(update, todoController.getTask(), key);
                 }
             } else {
                 GetFileInfo getFileInfo = new GetFileInfo();

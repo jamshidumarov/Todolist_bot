@@ -28,14 +28,14 @@ public class CallBackQueryController {
             String[] commands = update.getCallbackQuery().getData().split("/");
 
             if (commands[2].equals("createNew")) {
-                TodoItem todoItem = new TodoItem();
-                todoItem.setId(Integer.toString(update.getCallbackQuery().getMessage().getMessageId()));
-//                todoItem.setUserId(update.getCallbackQuery().getMessage().getChatId());
-                task.put(update.getCallbackQuery().getMessage().getFrom().getId(), todoItem);
-                System.out.println("salomlar");
                 send_msg.setText("Vazifa titulini yuboring");
                 msg.setTypeMessage("sendmessage");
                 msg.setSendMessage(send_msg);
+                TodoItem todoItem = new TodoItem();
+                todoItem.setId(Integer.toString(update.getCallbackQuery().getMessage().getMessageId()));
+                todoItem.setUserId(update.getCallbackQuery().getMessage().getChatId());
+                task.put(update.getCallbackQuery().getMessage().getFrom().getId(), todoItem);
+                msg.setTask(task);
             }
             if (commands[2].equals("list")) {
                 send_msg.setText("blablabla");
