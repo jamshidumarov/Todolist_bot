@@ -8,14 +8,14 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CallBackQueryController {
     private Map<Integer, TodoItem> task = new HashMap<Integer, TodoItem>();
-    private Database database = new Database();
 
 
-    public MyMessages todoControllers(Update update) {
+    public MyMessages todoControllers(Update update,  Map<Integer, List<TodoItem>> database, Integer key) {
         MyMessages msg = new MyMessages();
 
         SendMessage send_msg = new SendMessage();
@@ -43,8 +43,18 @@ public class CallBackQueryController {
                 task.put(update.getCallbackQuery().getMessage().getFrom().getId(), todoItem);
             }
             if (commands[2].equals("list")) {
-                send_msg.setText("Bu buyruq hali mavjud emas");
+                List<TodoItem> items = database.get(key);
+                StringBuilder s = new StringBuilder();
+                send_msg.setParseMode("HTML");
+                Integer cnt = 1;
+                for (TodoItem item: items) {
+                    System.out.println(item.getTitle());
+                    System.out.println(item.getContent());
+                    s.append("\n<b>").append(String.valueOf(cnt)).append(".Title: </b>").append(item.getTitle()).append("\n<b>Content: </b>").append(item.getContent());
+                    cnt++;
+                }
                 msg.setTypeMessage("sendmessage");
+                send_msg.setText(String.valueOf(s));
                 msg.setSendMessage(send_msg);
             }
         }

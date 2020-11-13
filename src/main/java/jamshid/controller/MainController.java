@@ -3,18 +3,24 @@ package jamshid.controller;
 import jamshid.service.GetFileInfo;
 import jamshid.settings.SetLanguage;
 import jamshid.type.MyMessages;
+import jamshid.type.TodoItem;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
 public class MainController extends TelegramLongPollingBot {
 
-
     CallBackQueryController todoController = new CallBackQueryController();
+    Map<Integer, List<TodoItem>> database = new LinkedHashMap<Integer, List<TodoItem>>();
+    List<TodoItem> listItems = new LinkedList<TodoItem>();
     int key = 0;
 
 
@@ -29,6 +35,7 @@ public class MainController extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         MyMessages mymessages = new MyMessages();
         Message message = update.getMessage();
+        System.out.println(key);
 
 
         if (update.hasCallbackQuery()) {
@@ -45,7 +52,7 @@ public class MainController extends TelegramLongPollingBot {
                 if (callbackdata.endsWith("createNew")) {
                     key = callbackQuery.getMessage().getFrom().getId();
                 }
-                    mymessages = todoController.todoControllers(update);
+                    mymessages = todoController.todoControllers(update, database, key);
             } else {
                 mymessages = new GeneralController().controllerlar(callbackQuery.getFrom(),
                         callbackdata,
@@ -53,7 +60,8 @@ public class MainController extends TelegramLongPollingBot {
                         callbackQuery.getMessage().getMessageId(),
                         callbackQuery.getFrom().getId());
             }
-        } else {
+        }
+        else {
             String text = message.getText();
 
             if (text != null) {
@@ -65,9 +73,19 @@ public class MainController extends TelegramLongPollingBot {
                             message.getMessageId(),
                             message.getFrom().getId());
                 }else if (todoController.getTask().containsKey(key)) {
-                    System.out.println("yedi");
                     if (todoController.getTask().get(key).getType() == null) todoController.getTask().get(key).setType("title");
                     mymessages = new TasksController().controlTask(update, todoController.getTask(), key);
+                    if (database.get(key) != null && mymessages.getListTodo() != null){
+
+                        database.get(key).add(mymessages.getListTodo());
+//                        System.out.println("ifeni ichi database: " + database.toString());
+                    }
+                    else if(mymessages.getListTodo() != null) {
+
+                        listItems.add(mymessages.getListTodo());
+                        database.put(key, listItems);
+//                        System.out.println("elseni ichi database: " + database.toString());
+                    }
                 }
             } else {
                 GetFileInfo getFileInfo = new GetFileInfo();

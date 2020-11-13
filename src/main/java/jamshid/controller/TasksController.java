@@ -20,19 +20,22 @@ public class TasksController {
 
         if(task.containsKey(key)){
            if (task.get(key).getType().equals("title")){
-               send_msg.setText("*Title*: " + update.getMessage().getText() + "\nYaxshi! Endi vazifa kontentini yuboring:");
                task.get(key).setTitle(update.getMessage().getText());
+               send_msg.setText("*Title*: " + task.get(key).getTitle() + "\nYaxshi! Endi vazifa kontentini yuboring:");
                my_msg.setTypeMessage("sendmessage");
                task.get(key).setType("content");
                my_msg.setSendMessage(send_msg);
            }
-           if (task.get(key).getType().equals("content")){
-               send_msg.setText("Vazifa muvaffaqiyatli qo'shildi"+"\n*Title*: " + update.getMessage().getText() +"\n*Content*: "+task.get(key).getContent());
+           else if (task.get(key).getType().equals("content")){
+               task.get(key).setContent(update.getMessage().getText());
+               send_msg.setText("Vazifa muvaffaqiyatli qo'shildi"+"\n*Title*: " + task.get(key).getTitle() +"\n*Content*: "+task.get(key).getContent());
                InlineKeyboardButton menu = new InlineButtonUtil().button("Menu", "menu", ":clipboard:");
                List<InlineKeyboardButton> buttonsRow2 = new InlineButtonUtil().buttonsRow(menu);
                send_msg.setReplyMarkup(new InlineButtonUtil().keyboardMarkup(new InlineButtonUtil().rowsCollection(buttonsRow2)));
                my_msg.setSendMessage(send_msg);
+               task.get(key).setType("addToDatabase");
                my_msg.setTypeMessage("sendmessage");
+               my_msg.setListTodo(task.get(key));
            }
         } else System.out.println("yemadi");
         return my_msg;
